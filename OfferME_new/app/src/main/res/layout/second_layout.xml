@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="left"
+    android:padding="5dp"
+    android:background="@drawable/bgimage">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="110dp"
+        android:id="@+id/imageViewDet"
+        android:src="@drawable/pub"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Large Text"
+        android:id="@+id/textTitle"
+        android:textColor="#ffffffff"
+        android:textStyle="bold"
+        android:layout_alignTop="@+id/imageViewDet"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:textSize="40sp"
+        android:layout_margin="20dp"
+        android:layout_centerVertical="true" />
+
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/button"
+        android:layout_below="@+id/imageViewDet"
+        android:id="@+id/listViewOffers"
+        android:background="#cb293755" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Back"
+        android:id="@+id/button"
+        android:onClick="onBackClick"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Check In!"
+        android:id="@+id/buttonCheckin"
+        android:onClick="onCheckinClick"
+        android:layout_below="@+id/listViewOffers"
+        android:layout_alignRight="@+id/listViewOffers"
+        android:layout_alignEnd="@+id/listViewOffers"
+        android:visibility="gone" />
+
+</RelativeLayout>

@@ -1,0 +1,29 @@
+<RelativeLayout
+    android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:background="@drawable/bgimage"
+    android:id="@+id/relativeLayoutMaps"
+    android:paddingLeft="@dimen/main_horizontal_margin"
+    android:paddingRight="@dimen/main_horizontal_margin"
+    android:paddingTop="@dimen/main_vertical_margin"
+    android:paddingBottom="@dimen/main_vertical_margin"
+    android:orientation="vertical">
+
+<fragment xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="240dp" android:id="@+id/map" tools:context=".MapsActivity"
+    android:name="com.google.android.gms.maps.SupportMapFragment" />
+
+    <ListView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/listView"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentBottom="true"
+        android:layout_below="@+id/map">
+
+        </ListView>
+
+</RelativeLayout>
