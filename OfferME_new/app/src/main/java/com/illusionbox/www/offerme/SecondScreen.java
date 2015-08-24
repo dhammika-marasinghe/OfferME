@@ -40,6 +40,7 @@ public class SecondScreen extends Activity {
     float distance;
     private boolean checkedIn;
     Button checkin;
+    String deetsUrl;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +59,7 @@ public class SecondScreen extends Activity {
         double resLng = fromActivity.getExtras().getDouble("resLng");
         double myLat = fromActivity.getExtras().getDouble("latitude");
         double myLng = fromActivity.getExtras().getDouble("longitude");
+        deetsUrl = fromActivity.getExtras().getString("deetsUrl");
 
         checkin = (Button) findViewById(R.id.buttonCheckin);
 
@@ -65,7 +67,7 @@ public class SecondScreen extends Activity {
         float []  results = new float[1];
         Location.distanceBetween(myLat, myLng, resLat, resLng, results);
 
-        if(results[0] < 50){
+        if(results[0] < 500){
             checkin.setVisibility(View.VISIBLE);
         }
 
@@ -98,6 +100,12 @@ public class SecondScreen extends Activity {
         }
     }
 
+    public void onClickDeets(View view) {
+        MyDeetsDialog d = new MyDeetsDialog();
+        d.setDeetsUrl(deetsUrl);
+        d.show(getFragmentManager(), "theDeets");
+    }
+
     class RequestTask extends AsyncTask<String, String, String> {
 
         private ProgressDialog progressDialog = new ProgressDialog(SecondScreen.this);
@@ -112,11 +120,11 @@ public class SecondScreen extends Activity {
             theOfferAdapter = new OfferAdapter(SecondScreen.this, offers);
             theListView = (ListView) findViewById(R.id.listViewOffers);
             theListView.setAdapter(theOfferAdapter);
-            progressDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
+            /*progressDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
                 public void onCancel(DialogInterface arg0) {
                     RequestTask.this.cancel(true);
                 }
-            });
+            });*/
         }
 
         @Override
@@ -137,8 +145,12 @@ public class SecondScreen extends Activity {
                     throw new IOException(statusLine.getReasonPhrase());
                 }
             } catch (ClientProtocolException e) {
+                Toast.makeText(SecondScreen.this, "No internet connection.", Toast.LENGTH_SHORT).show();
+                finish();
                 //TODO Handle problems..
             } catch (IOException e) {
+                Toast.makeText(SecondScreen.this, "No internet connection.", Toast.LENGTH_SHORT).show();
+                finish();
                 //TODO Handle problems..
             }
             return responseString;
@@ -170,4 +182,5 @@ public class SecondScreen extends Activity {
             theOfferAdapter.notifyDataSetChanged();
         }
     }
+
 }

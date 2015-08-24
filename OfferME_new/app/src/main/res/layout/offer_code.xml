@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/imageViewQR"
+        android:src="@drawable/iblauncher"
+        android:layout_centerVertical="true"
+        android:minHeight="200dp"
+        android:maxHeight="300dp"
+        android:minWidth="200dp"
+        android:maxWidth="300dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Please wait..."
+        android:id="@+id/textViewOC"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:textSize="40sp" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Got It!"
+        android:id="@+id/buttonCompleted"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Show this to your cashier to claim your offer"
+        android:id="@+id/textView"
+        android:textSize="15sp"
+        android:layout_above="@+id/buttonCompleted"
+        android:layout_centerHorizontal="true" />
+
+</RelativeLayout>

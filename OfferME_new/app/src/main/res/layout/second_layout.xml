@@ -60,4 +60,14 @@
         android:layout_alignEnd="@+id/listViewOffers"
         android:visibility="gone" />
 
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="About Us"
+        android:id="@+id/buttonDeets"
+        android:layout_alignTop="@+id/textTitle"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:onClick="onClickDeets" />
+
 </RelativeLayout>

@@ -1,6 +1,7 @@
 package com.illusionbox.www.offerme;
 
 import android.app.DialogFragment;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.location.Location;
 import android.os.Bundle;
@@ -25,6 +26,7 @@ import java.util.HashMap;
 
 public class MapsActivity extends FragmentActivity {
 
+    private ProgressDialog progressDialog;
     private GoogleMap mMap; // Might be null if Google Play services APK is not available.
 
     ArrayList<String> nearby;
@@ -36,6 +38,12 @@ public class MapsActivity extends FragmentActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setMessage("Locating your device...");
+        progressDialog.show();
+        progressDialog.setCancelable(false);
+
         setContentView(R.layout.activity_maps);
         setUpMapIfNeeded();
 
@@ -108,19 +116,35 @@ public class MapsActivity extends FragmentActivity {
         mMap.getUiSettings().setZoomControlsEnabled(true);
 
         Location dummyLocation = new Location("");
+        Location dummyLocation1 = new Location("");
+        /*UOP
+        7.254642, 80.591309
+        */
         dummyLocation.setLatitude(7.279107);
         dummyLocation.setLongitude(80.698602);
+        dummyLocation1.setLatitude(7.254642);
+        dummyLocation1.setLongitude(80.591309);
+
+        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(dummyLocation1.getLatitude(),dummyLocation1.getLongitude()), 10));
 
 
         final HashMap<String,Restaurant> restaurants = new HashMap<>();
-        restaurants.put("KaMuKo", new Restaurant("KaMuKo", "The best Korean cuisine in town!", dummyLocation.getLatitude(), dummyLocation.getLongitude(), Restaurant.FINE_DINING, "https://raw.githubusercontent.com/janithajc/share/master/KaMuKo.offer"));
-        restaurants.put("McDonalds", new Restaurant("McDonalds", "Enjoy Mc Burgers!", dummyLocation.getLatitude() + 0.01, dummyLocation.getLongitude() + 0.01, Restaurant.PUB, "https://raw.githubusercontent.com/janithajc/share/master/mcDonalds.offer"));
-        restaurants.put("KFC", new Restaurant("KFC", "Best Fried Chicken!", dummyLocation.getLatitude() + 0.015, dummyLocation.getLongitude() - 0.015, Restaurant.PUB, "https://raw.githubusercontent.com/janithajc/share/master/mcDonalds.offer"));
-        restaurants.put("Dinemore", new Restaurant("Dinemore", "Submarines will make you weep!", dummyLocation.getLatitude() + 0.02, dummyLocation.getLongitude() + 0.02, Restaurant.FINE_DINING,"https://raw.githubusercontent.com/janithajc/share/master/mcDonalds.offer"));
-        restaurants.put("Bay Leaf", new Restaurant("Bay Leaf", "Great food huge prices!", dummyLocation.getLatitude(), dummyLocation.getLongitude() + 0.03, Restaurant.FINE_DINING,""));
-        restaurants.put("Oro", new Restaurant("Oro", "Thin Pizza with big pricetags!", dummyLocation.getLatitude() + 0.02, dummyLocation.getLongitude() - 0.01, Restaurant.FINE_DINING,""));
-        restaurants.put("Pizza Hut", new Restaurant("Pizza Hut", "Great pizza with great crust!", dummyLocation.getLatitude() - 0.01, dummyLocation.getLongitude() - 0.01, Restaurant.PIZZA,"https://raw.githubusercontent.com/janithajc/share/master/pizzaHut.offer"));
-        restaurants.put("Domino's", new Restaurant("Domino's", "Great pizza with a lot of cheese!", dummyLocation.getLatitude() + 0.03, dummyLocation.getLongitude() + 0.15, Restaurant.PIZZA,""));
+        restaurants.put("KaMuKo", new Restaurant("KaMuKo", "The best Korean cuisine in town!", dummyLocation1.getLatitude(), dummyLocation1.getLongitude(), Restaurant.FINE_DINING, "https://raw.githubusercontent.com/janithajc/share/master/KaMuKo.offer", "https://raw.githubusercontent.com/janithajc/share/master/KaMuKo.details"));
+        restaurants.put("McDonalds", new Restaurant("McDonalds", "Enjoy Mc Burgers!", dummyLocation1.getLatitude() + 0.01, dummyLocation1.getLongitude() + 0.01, Restaurant.PUB, "https://raw.githubusercontent.com/janithajc/share/master/mcDonalds.offer", "https://raw.githubusercontent.com/janithajc/share/master/mcDonalds.details"));
+        restaurants.put("KFC", new Restaurant("KFC", "Best Fried Chicken!", dummyLocation1.getLatitude() + 0.015, dummyLocation1.getLongitude() - 0.015, Restaurant.PUB, "https://raw.githubusercontent.com/janithajc/share/master/mcDonalds.offer", "https://raw.githubusercontent.com/janithajc/share/master/pizzaHut.details"));
+        restaurants.put("Dinemore", new Restaurant("Dinemore", "Submarines will make you weep!", dummyLocation1.getLatitude() + 0.02, dummyLocation1.getLongitude() + 0.02, Restaurant.FINE_DINING,"https://raw.githubusercontent.com/janithajc/share/master/mcDonalds.offer", "https://raw.githubusercontent.com/janithajc/share/master/pizzaHut.details"));
+        restaurants.put("Bay Leaf", new Restaurant("Bay Leaf", "Great food huge prices!", dummyLocation1.getLatitude(), dummyLocation1.getLongitude() + 0.03, Restaurant.FINE_DINING,"https://raw.githubusercontent.com/janithajc/share/master/KaMuKo.offer","https://raw.githubusercontent.com/janithajc/share/master/pizzaHut.details"));
+        restaurants.put("Oro", new Restaurant("Oro", "Thin Pizza with big pricetags!", dummyLocation1.getLatitude() + 0.02, dummyLocation1.getLongitude() - 0.01, Restaurant.FINE_DINING,"https://raw.githubusercontent.com/janithajc/share/master/pizzaHut.offer","https://raw.githubusercontent.com/janithajc/share/master/pizzaHut.details"));
+        restaurants.put("Pizza Hut", new Restaurant("Pizza Hut", "Great pizza with great crust!", dummyLocation1.getLatitude() - 0.01, dummyLocation1.getLongitude() - 0.01, Restaurant.PIZZA,"https://raw.githubusercontent.com/janithajc/share/master/pizzaHut.offer", "https://raw.githubusercontent.com/janithajc/share/master/pizzaHut.details"));
+        restaurants.put("Domino's", new Restaurant("Domino's", "Great pizza with a lot of cheese!", dummyLocation1.getLatitude() + 0.03, dummyLocation1.getLongitude() + 0.15, Restaurant.PIZZA,"https://raw.githubusercontent.com/janithajc/share/master/pizzaHut.offer", "https://raw.githubusercontent.com/janithajc/share/master/pizzaHut.details"));
+        /*restaurants.put("KaMuKo1", new Restaurant("KaMuKo1", "The best Korean cuisine in town!", dummyLocation1.getLatitude(), dummyLocation1.getLongitude(), Restaurant.FINE_DINING, "https://raw.githubusercontent.com/janithajc/share/master/KaMuKo.offer", "https://raw.githubusercontent.com/janithajc/share/master/mcDonalds.details"));
+        restaurants.put("McDonalds1", new Restaurant("McDonalds1", "Enjoy Mc Burgers!", dummyLocation1.getLatitude() + 0.01, dummyLocation1.getLongitude() + 0.01, Restaurant.PUB, "https://raw.githubusercontent.com/janithajc/share/master/mcDonalds.offer", "https://raw.githubusercontent.com/janithajc/share/master/pizzaHut.details"));
+        restaurants.put("KFC1", new Restaurant("KFC1", "Best Fried Chicken!", dummyLocation1.getLatitude() + 0.015, dummyLocation1.getLongitude() - 0.015, Restaurant.PUB, "https://raw.githubusercontent.com/janithajc/share/master/mcDonalds.offer", "https://raw.githubusercontent.com/janithajc/share/master/pizzaHut.details"));
+        restaurants.put("Dinemore1", new Restaurant("Dinemore1", "Submarines will make you weep!", dummyLocation1.getLatitude() + 0.02, dummyLocation1.getLongitude() + 0.02, Restaurant.FINE_DINING,"https://raw.githubusercontent.com/janithajc/share/master/mcDonalds.offer", "https://raw.githubusercontent.com/janithajc/share/master/pizzaHut.details"));
+        restaurants.put("Bay Leaf1", new Restaurant("Bay Leaf1", "Great food huge prices!", dummyLocation1.getLatitude(), dummyLocation1.getLongitude() + 0.03, Restaurant.FINE_DINING,"","https://raw.githubusercontent.com/janithajc/share/master/pizzaHut.details"));
+        restaurants.put("Oro1", new Restaurant("Oro1", "Thin Pizza with big pricetags!", dummyLocation1.getLatitude() + 0.02, dummyLocation1.getLongitude() - 0.01, Restaurant.FINE_DINING,"","https://raw.githubusercontent.com/janithajc/share/master/pizzaHut.details"));
+        restaurants.put("Pizza Hut1", new Restaurant("Pizza Hut1", "Great pizza with great crust!", dummyLocation1.getLatitude() - 0.01, dummyLocation1.getLongitude() - 0.01, Restaurant.PIZZA,"https://raw.githubusercontent.com/janithajc/share/master/pizzaHut.offer", "https://raw.githubusercontent.com/janithajc/share/master/pizzaHut.details"));
+        restaurants.put("Domino's1", new Restaurant("Domino's1", "Great pizza with a lot of cheese!", dummyLocation1.getLatitude() + 0.03, dummyLocation1.getLongitude() + 0.15, Restaurant.PIZZA,"",""));*/
 
         final MarkerOptions [] resMarker = new MarkerOptions[restaurants.size()];/*{new MarkerOptions().position(new LatLng(dummyLocation.getLatitude(), dummyLocation.getLongitude())).title("KaMuKo"),
                 new MarkerOptions().position(new LatLng(dummyLocation.getLatitude()+0.01, dummyLocation.getLongitude()+0.01)).title("McDonalds"),
@@ -142,11 +166,10 @@ public class MapsActivity extends FragmentActivity {
             i++;
         }
 
-        Toast.makeText(MapsActivity.this, "Locating your device...", Toast.LENGTH_LONG).show();
-
         mMap.setOnMyLocationChangeListener(new GoogleMap.OnMyLocationChangeListener() {
             @Override
             public void onMyLocationChange(final Location location) {
+                progressDialog.dismiss();
                 mMap.clear();
                 nearby.clear();
                 nearbyRestaurants.clear();
@@ -183,7 +206,7 @@ public class MapsActivity extends FragmentActivity {
                         String resTitle = res.getName();
                         String restaurantSelected = "Locating " + resTitle;
                         Toast.makeText(MapsActivity.this, restaurantSelected, Toast.LENGTH_SHORT).show();
-                        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(res.getPosititon(), 19));
+                        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(res.getPosititon(), 15));
                     }
                 });
                 theListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
@@ -203,6 +226,7 @@ public class MapsActivity extends FragmentActivity {
                         secondScreenIntent.putExtra("resLng", res.getPosititon().longitude);
                         secondScreenIntent.putExtra("latitude", location.getLatitude());
                         secondScreenIntent.putExtra("longitude", location.getLongitude());
+                        secondScreenIntent.putExtra("deetsUrl", res.getDetails());
                         startActivity(secondScreenIntent);
                         return true;
                     }

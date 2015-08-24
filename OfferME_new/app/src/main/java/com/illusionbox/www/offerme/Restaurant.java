@@ -11,6 +11,7 @@ public class Restaurant {
     public static final int FINE_DINING = 0;
     public static final int PIZZA = 1;
     public static final int PUB = 2;
+    public static final int FAST_FOOD = 2;
 
     private String name;
     private String description;
@@ -26,6 +27,8 @@ public class Restaurant {
     private int imgResource;
     private String offers;
 
+    private String details;
+
     public String getOffers(){
         return offers;
     }
@@ -34,12 +37,13 @@ public class Restaurant {
         this.offers = offers;
     }
 
-    public Restaurant(String name, String description, double latitude, double longitude, int type, String offers){
+    public Restaurant(String name, String description, double latitude, double longitude, int type, String offers, String details){
         this.name = name;
         this.description = description;
         this.posititon = new LatLng(latitude, longitude);
         this.type = type;
         this.offers = offers;
+        this.details = details;
     }
 
     public void set_imgResource(int imgResource){
@@ -72,6 +76,14 @@ public class Restaurant {
 
     public LatLng getPosititon(){
         return posititon;
+    }
+
+    public String getDetails() {
+        return details;
+    }
+
+    public void setDetails(String details) {
+        this.details = details;
     }
 
     @Override

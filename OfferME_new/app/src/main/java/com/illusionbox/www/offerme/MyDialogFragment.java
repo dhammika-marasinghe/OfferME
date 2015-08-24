@@ -17,35 +17,12 @@ import android.widget.Toast;
  */
 public class MyDialogFragment extends DialogFragment implements View.OnClickListener {
 
-    /*@Override
-    public Dialog onCreateDialog(Bundle savedInstanceState) {
-        AlertDialog.Builder theDialog = new AlertDialog.Builder(getActivity());
-
-        theDialog.setTitle("Take offer?");
-
-        theDialog.setMessage("Are you sure you want to take this offer?");
-
-        theDialog.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                Toast.makeText(getActivity(), "Thank you!", Toast.LENGTH_SHORT).show();
-            }
-        });
-
-        theDialog.setNegativeButton("No", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                Toast.makeText(getActivity(), "Cancelled", Toast.LENGTH_SHORT).show();
-            }
-        });
-
-        return super.onCreateDialog(savedInstanceState);
-    }*/
     Button yes,no;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        getDialog().setTitle("Take Offer?");
         View view = inflater.inflate(R.layout.my_dialog, null);
         yes = (Button) view.findViewById(R.id.buttonPositive);
         no = (Button) view.findViewById(R.id.buttonNegative);
@@ -58,6 +35,8 @@ public class MyDialogFragment extends DialogFragment implements View.OnClickList
     public void onClick(View v) {
         if(v.getId() == R.id.buttonPositive){
             dismiss();
+            DialogFragment d = new MyOfferDialog();
+            d.show(getFragmentManager(), "Something");
             Toast.makeText(getActivity(), "Thank you!", Toast.LENGTH_SHORT).show();
         }
         else{
