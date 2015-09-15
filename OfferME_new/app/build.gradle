@@ -20,17 +20,8 @@ android {
     compileOptions {
     }
 }
-<<<<<<< HEAD
-=======
-
-repositories {
-    mavenCentral() 
-}
-
->>>>>>> origin/master
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compile 'com.android.support:appcompat-v7:22.0.0'
     compile 'com.google.android.gms:play-services:6.5.87'
-    compile 'com.facebook.android:facebook-android-sdk:4.1.0'
 }

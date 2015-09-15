@@ -41,6 +41,8 @@ public class SecondScreen extends Activity {
     private boolean checkedIn;
     Button checkin;
     String deetsUrl;
+    LatLng myLatLng;
+    LatLng resLatLng;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,7 +55,7 @@ public class SecondScreen extends Activity {
 
         String title =  fromActivity.getExtras().getString("title");
         //String description =  fromActivity.getExtras().getString("description");
-        int imgReesource = fromActivity.getExtras().getInt("image");
+        int imgResource = fromActivity.getExtras().getInt("image");
         String offersLink = fromActivity.getExtras().getString("offersLink");
         double resLat = fromActivity.getExtras().getDouble("resLat");
         double resLng = fromActivity.getExtras().getDouble("resLng");
@@ -61,13 +63,18 @@ public class SecondScreen extends Activity {
         double myLng = fromActivity.getExtras().getDouble("longitude");
         deetsUrl = fromActivity.getExtras().getString("deetsUrl");
 
+        myLatLng = new LatLng(myLat, myLng);
+        resLatLng = new LatLng(resLat, resLng);
+
+
         checkin = (Button) findViewById(R.id.buttonCheckin);
 
+        /*float []  results = new float[1];
+        Location.distanceBetween(myLat, myLng, resLat, resLng, results);*/
 
-        float []  results = new float[1];
-        Location.distanceBetween(myLat, myLng, resLat, resLng, results);
+        LocationHandler locationHandler = new LocationHandler(myLatLng, resLatLng);
 
-        if(results[0] < 500){
+        if(locationHandler.checkinAvailable()){
             checkin.setVisibility(View.VISIBLE);
         }
 
@@ -80,7 +87,7 @@ public class SecondScreen extends Activity {
         descView.setText(description);*/
 
         ImageView img = (ImageView) findViewById(R.id.imageViewDet);
-        img.setImageResource(imgReesource);
+        img.setImageResource(imgResource);
     }
 
     public void onBackClick(View view) {
