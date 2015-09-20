@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 21-Sep-2015 02:18:12 by Hibernate Tools 3.6.0 -->
+<hibernate-mapping>
+    <class name="com.illusionbox.offerme.model.Administrator" table="administrator" catalog="offerme">
+        <id name="email" type="string">
+            <column name="email" length="60" />
+            <generator class="assigned" />
+        </id>
+        <property name="password" type="string">
+            <column name="password" length="45" />
+        </property>
+        <property name="name" type="string">
+            <column name="name" length="65" />
+        </property>
+        <set name="restaurantManagers" table="restaurant_manager" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="administrator_email" length="60" not-null="true" />
+            </key>
+            <one-to-many class="com.illusionbox.offerme.model.RestaurantManager" />
+        </set>
+    </class>
+</hibernate-mapping>

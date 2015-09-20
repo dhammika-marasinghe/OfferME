@@ -1,0 +1,51 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 21-Sep-2015 02:18:12 by Hibernate Tools 3.6.0 -->
+<hibernate-mapping>
+    <class name="com.illusionbox.offerme.model.Restaurant" table="restaurant" catalog="offerme">
+        <id name="idrestaurant" type="java.lang.Integer">
+            <column name="idrestaurant" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="restaurantManager" class="com.illusionbox.offerme.model.RestaurantManager" fetch="select">
+            <column name="restaurant_manager_email" length="60" not-null="true" />
+        </many-to-one>
+        <property name="location" type="string">
+            <column name="location" length="45" />
+        </property>
+        <property name="address" type="string">
+            <column name="address" length="100" />
+        </property>
+        <property name="tel" type="string">
+            <column name="tel" length="15" />
+        </property>
+        <property name="web" type="string">
+            <column name="web" length="45" />
+        </property>
+        <property name="logoUrl" type="string">
+            <column name="logo_url" length="100" />
+        </property>
+        <property name="bannerUrl" type="string">
+            <column name="banner_url" length="100" />
+        </property>
+        <property name="openingHrs" type="string">
+            <column name="opening_hrs" length="100" />
+        </property>
+        <property name="description" type="string">
+            <column name="description" length="65535" />
+        </property>
+        <property name="rating" type="java.lang.Float">
+            <column name="rating" precision="12" scale="0" />
+        </property>
+        <property name="state" type="string">
+            <column name="state" length="10" />
+        </property>
+        <set name="offers" table="offer" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="restaurant_idrestaurant" not-null="true" />
+            </key>
+            <one-to-many class="com.illusionbox.offerme.model.Offer" />
+        </set>
+    </class>
+</hibernate-mapping>
