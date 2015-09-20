@@ -3,4 +3,7 @@
     <string name="title_activity_maps">OfferME</string>
     <string name="button_1text">Get Offers</string>
     <string name="options_exit_text">Exit</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
 </resources>

@@ -34,6 +34,7 @@ public class MapsActivity extends FragmentActivity {
     HashMap<String,MarkerOptions> nearbyMarks;
     RestaurantAdapter theAdapter;
     ListView theListView;
+    int radius = 2000;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +44,14 @@ public class MapsActivity extends FragmentActivity {
         progressDialog.setMessage("Locating your device...");
         progressDialog.show();
         progressDialog.setCancelable(false);
+
+        Intent fromActivity = getIntent();
+
+        try {
+            radius = fromActivity.getExtras().getInt("radius");
+        }catch (Exception e){
+            radius = 2000;
+        }
 
         setContentView(R.layout.activity_maps);
         setUpMapIfNeeded();
@@ -120,10 +129,10 @@ public class MapsActivity extends FragmentActivity {
         /*UOP
         7.254642, 80.591309
         */
-        /*dummyLocation.setLatitude(7.279107);
-        dummyLocation.setLongitude(80.698602);*/
-        dummyLocation.setLatitude(7.254642);
-        dummyLocation.setLongitude(80.591309);
+        dummyLocation.setLatitude(7.279107);
+        dummyLocation.setLongitude(80.698602);
+        /*dummyLocation.setLatitude(7.254642);
+        dummyLocation.setLongitude(80.591309);*/
 
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(dummyLocation.getLatitude(), dummyLocation.getLongitude()), 10));
 
@@ -182,7 +191,7 @@ public class MapsActivity extends FragmentActivity {
                     /*double latDist = Math.abs(a.getPosition().latitude - location.getLatitude());
                     double longDist = Math.abs(a.getPosition().longitude - location.getLongitude());
                     double dist = Math.sqrt(latDist*latDist + longDist*longDist);*/
-                    if(results[0] < 2000)
+                    if(results[0] < radius)
                     {
                         a.snippet(distance);
                         //nearby.add(a.getTitle());
@@ -232,5 +241,10 @@ public class MapsActivity extends FragmentActivity {
                 });
             }
         });
+    }
+    public void settingsClick(View view){
+        Intent settingsIntent = new Intent(MapsActivity.this, SettingsActivity.class);
+        settingsIntent.putExtra("radius", radius);
+        startActivity(settingsIntent);
     }
 }

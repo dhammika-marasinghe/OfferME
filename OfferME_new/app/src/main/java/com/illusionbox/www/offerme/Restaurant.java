@@ -45,9 +45,6 @@ public class Restaurant {
         return this.imgResource;
     }
 
-    public void set_longDescription(String longDescription){
-    }
-
     public String getName(){
         return name;
     }
