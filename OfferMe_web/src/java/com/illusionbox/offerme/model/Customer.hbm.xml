@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 21-Sep-2015 02:18:12 by Hibernate Tools 3.6.0 -->
+<hibernate-mapping>
+    <class name="com.illusionbox.offerme.model.Customer" table="customer" catalog="offerme">
+        <id name="email" type="string">
+            <column name="email" length="60" />
+            <generator class="assigned" />
+        </id>
+        <property name="accessToken" type="string">
+            <column name="access_token" length="45" />
+        </property>
+        <property name="name" type="string">
+            <column name="name" length="45" />
+        </property>
+        <property name="tel" type="string">
+            <column name="tel" length="15" />
+        </property>
+        <property name="facebook" type="string">
+            <column name="facebook" length="60" />
+        </property>
+        <property name="offerCount" type="java.lang.Integer">
+            <column name="offer_count" />
+        </property>
+        <property name="subscribe" type="java.lang.Boolean">
+            <column name="subscribe" />
+        </property>
+        <set name="offers" table="customer_has_offer" inverse="false" lazy="true" fetch="select">
+            <key>
+                <column name="customer_email" length="60" not-null="true" />
+            </key>
+            <many-to-many entity-name="com.illusionbox.offerme.model.Offer">
+                <column name="offer_idoffer" not-null="true" />
+            </many-to-many>
+        </set>
+    </class>
+</hibernate-mapping>
