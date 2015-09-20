@@ -12,6 +12,7 @@
 }
 
 .form-login {
+    z-index: 100;
     background-color: #EDEDED;
     top: 40%;
     left: 35%;
