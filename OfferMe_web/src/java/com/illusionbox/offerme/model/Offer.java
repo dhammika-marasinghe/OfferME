@@ -55,7 +55,7 @@ public class Offer implements java.io.Serializable {
         return off;
     }
 
-    public final static String csvHeader = "title,description,startDate,endDate,repeat,valid,imageUrl,type,offerCode";
+    public final static String csvHeader = "title,description,startDate,endDate,repeat,valid,imageUrl,type,offerCode~END~";
 
     public String toCSVLine() {
 
@@ -67,7 +67,8 @@ public class Offer implements java.io.Serializable {
                 + valid + ","
                 + imageUrl + ","
                 + type + ","
-                + offerCode;
+                + offerCode
+                + "~END~";
     }
 
     public Integer getIdoffer() {

@@ -75,7 +75,7 @@ public class Restaurant implements java.io.Serializable {
         return res;
     }
 
-    public final static String csvHeader = "name,latitude,longitude,address,tel,web,logoUrl,bannerUrl,openingHrs,description,rating,state,type,idrestaurant";
+    public final static String csvHeader = "name,latitude,longitude,address,tel,web,logoUrl,bannerUrl,openingHrs,description,rating,state,type,idrestaurant~END~";
 
     public String toCSVLine() {
 
@@ -92,7 +92,8 @@ public class Restaurant implements java.io.Serializable {
                 + rating + ","
                 + state + ","
                 + type + ","
-                + idrestaurant;
+                + idrestaurant
+                + "~END~";
     }
 
     public Integer getIdrestaurant() {
