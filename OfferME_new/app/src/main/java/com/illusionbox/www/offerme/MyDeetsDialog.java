@@ -138,7 +138,12 @@ public class MyDeetsDialog extends DialogFragment implements View.OnClickListene
         @Override
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
-            ParseString(responseString);
+            try{
+                ParseString(responseString);
+            }catch (Exception e) {
+                Toast.makeText(getActivity(), "No internet connection.", Toast.LENGTH_SHORT).show();
+                getDialog().dismiss();
+            }
         }
 
         private void ParseString(String s){

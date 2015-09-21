@@ -2,6 +2,7 @@ package com.illusionbox.www.offerme;
 
 import android.app.Activity;
 
+import android.app.AlertDialog;
 import android.app.DialogFragment;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
@@ -9,6 +10,7 @@ import android.content.Intent;
 import android.location.Location;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -37,6 +39,7 @@ import java.util.ArrayList;
 public class SecondScreen extends Activity {
 
     ArrayList<Offer> offers = new ArrayList<>();
+
     float distance;
     private boolean checkedIn;
     Button checkin;
@@ -152,11 +155,11 @@ public class SecondScreen extends Activity {
                     throw new IOException(statusLine.getReasonPhrase());
                 }
             } catch (ClientProtocolException e) {
-                Toast.makeText(SecondScreen.this, "No internet connection.", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(SecondScreen.this, "No internet connection.", Toast.LENGTH_SHORT).show();
                 finish();
                 //TODO Handle problems..
             } catch (IOException e) {
-                Toast.makeText(SecondScreen.this, "No internet connection.", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(SecondScreen.this, "No internet connection.", Toast.LENGTH_SHORT).show();
                 finish();
                 //TODO Handle problems..
             }
@@ -167,26 +170,30 @@ public class SecondScreen extends Activity {
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
             progressDialog.dismiss();
-            String [] csv = responseString.split("\n");
-            for(String s: csv) {
-                String [] vals = s.split(",");
-                //Toast.makeText(SecondScreen.this, s, Toast.LENGTH_SHORT).show();
-                if(vals.length == 4) {
-                    offers.add(new Offer(vals[0], vals[1], vals[2], Boolean.parseBoolean(vals[3]), R.drawable.iblauncher));
-                }
-            }
-            theListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    if(!checkedIn){
-                        Toast.makeText(SecondScreen.this, "Please Check In", Toast.LENGTH_SHORT);
-                    }else{
-                        DialogFragment d = new MyDialogFragment();
-                        d.show(getFragmentManager(), "theDialog");
+            try {
+                String[] csv = responseString.split("\n");
+                for (String s : csv) {
+                    String[] vals = s.split(",");
+                    //Toast.makeText(SecondScreen.this, s, Toast.LENGTH_SHORT).show();
+                    if (vals.length == 4) {
+                        offers.add(new Offer(vals[0], vals[1], vals[2], Boolean.parseBoolean(vals[3]), R.drawable.iblauncher));
                     }
                 }
-            });
-            theOfferAdapter.notifyDataSetChanged();
+                theListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                        if (!checkedIn) {
+                            Toast.makeText(SecondScreen.this, "Please Check In", Toast.LENGTH_SHORT).show();
+                        } else {
+                            DialogFragment d = new MyDialogFragment();
+                            d.show(getFragmentManager(), "theDialog");
+                        }
+                    }
+                });
+                theOfferAdapter.notifyDataSetChanged();
+            } catch (Exception e){
+                Toast.makeText(SecondScreen.this, "No internet connection.", Toast.LENGTH_SHORT).show();
+            }
         }
     }
 

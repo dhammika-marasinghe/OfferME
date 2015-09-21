@@ -1,5 +1,6 @@
 package com.illusionbox.www.offerme;
 
+import android.app.Activity;
 import android.location.Location;
 
 import com.google.android.gms.maps.model.LatLng;
@@ -8,6 +9,8 @@ import com.google.android.gms.maps.model.LatLng;
  * Created by Janitha on 8/25/2015.
  */
 public class LocationHandler {
+
+    private Activity activity;
 
     private LatLng UserLocation;
 
