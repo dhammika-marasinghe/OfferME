@@ -128,7 +128,7 @@ CREATE TABLE IF NOT EXISTS `offerme`.`customer_has_offer` (
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
--- changes
+-- changes v1
 
 ALTER TABLE `offerme`.`restaurant_manager` 
 DROP FOREIGN KEY `fk_restaurant_manager_administrator1`;
@@ -156,7 +156,35 @@ ADD CONSTRAINT `fk_restaurant_manager_administrator1`
   REFERENCES `offerme`.`administrator` (`email`)
   ON DELETE NO ACTION
   ON UPDATE NO ACTION;
+  
+-- changes v2
 
+ALTER TABLE `offerme`.`offer` 
+CHANGE COLUMN `title` `title` VARCHAR(45) NULL DEFAULT NULL ,
+DROP PRIMARY KEY,
+ADD PRIMARY KEY (`idoffer`);
+
+-- changes v3
+
+ALTER TABLE `offerme`.`restaurant_manager` 
+CHANGE COLUMN `address` `address` VARCHAR(300) NULL DEFAULT NULL ;
+
+ALTER TABLE `offerme`.`restaurant` 
+CHANGE COLUMN `address` `address` VARCHAR(300) NULL DEFAULT NULL ,
+CHANGE COLUMN `web` `web` VARCHAR(300) NULL DEFAULT NULL ,
+CHANGE COLUMN `logo_url` `logo_url` VARCHAR(300) NULL DEFAULT NULL ,
+CHANGE COLUMN `banner_url` `banner_url` VARCHAR(300) NULL DEFAULT NULL ,
+CHANGE COLUMN `opening_hrs` `opening_hrs` VARCHAR(160) NULL DEFAULT NULL ,
+CHANGE COLUMN `state` `state` VARCHAR(20) NULL DEFAULT NULL ,
+ADD COLUMN `type` VARCHAR(45) NULL DEFAULT NULL AFTER `state`;
+
+ALTER TABLE `offerme`.`offer` 
+CHANGE COLUMN `title` `title` VARCHAR(100) NULL DEFAULT NULL ,
+CHANGE COLUMN `image_url` `image_url` VARCHAR(300) NULL DEFAULT NULL ;
+
+ALTER TABLE `offerme`.`customer` 
+CHANGE COLUMN `name` `name` VARCHAR(60) NULL DEFAULT NULL ,
+CHANGE COLUMN `facebook` `facebook` VARCHAR(100) NULL DEFAULT NULL ;
 
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
