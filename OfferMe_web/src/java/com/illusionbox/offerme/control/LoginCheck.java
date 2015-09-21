@@ -2,6 +2,7 @@ package com.illusionbox.offerme.control;
 
 import com.illusionbox.offerme.model.RestaurantManager;
 import com.illusionbox.offerme.manager.OfferMeHibernateUtil;
+import com.illusionbox.offerme.model.Administrator;
 import java.io.IOException;
 import java.util.List;
 import javax.servlet.ServletException;
@@ -50,15 +51,27 @@ public class LoginCheck extends HttpServlet {
                 Query q = hbSession.createQuery(hql);
 
                 List<RestaurantManager> managers = q.list();
-                if (managers.isEmpty()) {
-                    response.sendRedirect("index.jsp?msg=Login Error.\n Please check your username & password.");
-                } else {
+                if (!managers.isEmpty()) {
+                    request.getSession().setAttribute("User", request.getParameter("username"));
+                    response.sendRedirect("dashboard.jsp");
+                }
+                
+                hql = "from Administrator "
+                        + "where email='" + request.getParameter("username") + "' and "
+                        + "password='" + request.getParameter("password") + "'";
+                q = hbSession.createQuery(hql);
+
+                List<Administrator> administrators = q.list();
+                if (!administrators.isEmpty()) {
+                    request.getSession().setAttribute("Admin", request.getParameter("username"));
                     request.getSession().setAttribute("User", request.getParameter("username"));
                     response.sendRedirect("dashboard.jsp");
                 }
 
+                response.sendRedirect("index.jsp?msg=Login Error.\n Please check your username & password.");
+
             } else {
-                response.sendRedirect("index.jsp?msg=Login Error.\n Please provide your username & password.");
+                response.sendRedirect("index.jsp?msg=Please provide your username & password.");
             }
         } catch (Exception e) {
             throw new ServletException(e);

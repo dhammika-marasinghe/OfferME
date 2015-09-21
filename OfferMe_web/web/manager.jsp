@@ -2,11 +2,6 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <%
-            if (request.getSession().getAttribute("User") == null) {
-                response.sendRedirect("index.jsp");
-            }
-        %>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
         <!-- Bootstrap Core CSS -->
@@ -51,7 +46,7 @@
         </nav>
 
         <div class="col-lg-8 col-lg-offset-2 form-normal">
-            <form class="form-horizontal" action="requesttojoin.jsp" method="POST">
+            <form class="form-horizontal" action="add_restaurant_manager" method="POST">
                 <fieldset>
 
                     <!-- Form Name -->
