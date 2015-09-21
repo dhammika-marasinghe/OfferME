@@ -1,7 +1,8 @@
 package com.illusionbox.offerme.control;
 
+import com.illusionbox.offerme.manager.DB;
 import com.illusionbox.offerme.manager.OfferMeHibernateUtil;
-import com.illusionbox.offerme.model.RestaurantManager;
+import com.illusionbox.offerme.model.Offer;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
@@ -15,7 +16,7 @@ import org.hibernate.Transaction;
  *
  * @author 3rd EYE
  */
-public class AcceptRestaurantManager extends HttpServlet {
+public class ActivateOffer extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -30,22 +31,32 @@ public class AcceptRestaurantManager extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try {
-            if ((request.getParameter("email") != null) && (request.getParameter("accept") != null) && (request.getSession().getAttribute("Admin") != null)) {
-                Session hbSession = OfferMeHibernateUtil.getSessionFactory().openSession();
-                Transaction hbTransaction = hbSession.beginTransaction();
+            if ((request.getParameter("id") != null) && (request.getParameter("active") != null)
+                    && (request.getSession().getAttribute("User") != null)) {
+                /*
+                 Session hbSession = OfferMeHibernateUtil.getSessionFactory().openSession();
+                 Transaction hbTransaction = hbSession.beginTransaction();
 
-                RestaurantManager rm = (RestaurantManager) hbSession.load(RestaurantManager.class, request.getParameter("email"));
-                if (request.getParameter("accept").equals("YES")) {
-                    rm.setState("Active");
-                } else if (request.getParameter("accept").equals("NO")) {
-                    rm.setState("Deactive");
+                 Offer o = (Offer) hbSession.load(Offer.class, Integer.parseInt(request.getParameter("id")));
+                 out.println(o.getTitle());
+                 if (request.getParameter("active").equals("YES")) {
+                 o.setValid(true);
+                 } else if (request.getParameter("active").equals("NO")) {
+                 o.setValid(false);
+                 }
+                 out.println(o.getValid());
+                 hbSession.update(o);
+                 hbTransaction.commit();
+                 */
+                int valid = 0;
+                if (request.getParameter("active").equals("YES")) {
+                    valid = 1;
+                } else if (request.getParameter("active").equals("NO")) {
+                    valid = 0;
                 }
-
-                hbSession.update(rm);
-                hbTransaction.commit();
+                DB.update("update offer set valid=" + valid + " where idoffer=" + request.getParameter("id") + "");
             }
             response.sendRedirect("dashboard.jsp");
-
         } catch (Exception e) {
             throw new ServletException(e);
         }

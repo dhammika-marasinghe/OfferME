@@ -28,6 +28,14 @@
         <servlet-name>AddRestaurantManager</servlet-name>
         <servlet-class>com.illusionbox.offerme.control.AddRestaurantManager</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>AcceptRestaurantManager</servlet-name>
+        <servlet-class>com.illusionbox.offerme.control.AcceptRestaurantManager</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ActivateOffer</servlet-name>
+        <servlet-class>com.illusionbox.offerme.control.ActivateOffer</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>LoginCheck</servlet-name>
         <url-pattern>/login</url-pattern>
@@ -55,6 +63,14 @@
     <servlet-mapping>
         <servlet-name>AddRestaurantManager</servlet-name>
         <url-pattern>/add_restaurant_manager</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AcceptRestaurantManager</servlet-name>
+        <url-pattern>/AcceptRestaurantManager</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ActivateOffer</servlet-name>
+        <url-pattern>/activate_offer</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

@@ -53,22 +53,25 @@ public class LoginCheck extends HttpServlet {
                 List<RestaurantManager> managers = q.list();
                 if (!managers.isEmpty()) {
                     request.getSession().setAttribute("User", request.getParameter("username"));
+                    request.getSession().setAttribute("name", managers.get(0).getName());
                     response.sendRedirect("dashboard.jsp");
-                }
-                
-                hql = "from Administrator "
-                        + "where email='" + request.getParameter("username") + "' and "
-                        + "password='" + request.getParameter("password") + "'";
-                q = hbSession.createQuery(hql);
+                } else {
 
-                List<Administrator> administrators = q.list();
-                if (!administrators.isEmpty()) {
-                    request.getSession().setAttribute("Admin", request.getParameter("username"));
-                    request.getSession().setAttribute("User", request.getParameter("username"));
-                    response.sendRedirect("dashboard.jsp");
-                }
+                    hql = "from Administrator "
+                            + "where email='" + request.getParameter("username") + "' and "
+                            + "password='" + request.getParameter("password") + "'";
+                    q = hbSession.createQuery(hql);
 
-                response.sendRedirect("index.jsp?msg=Login Error.\n Please check your username & password.");
+                    List<Administrator> administrators = q.list();
+                    if (!administrators.isEmpty()) {
+                        request.getSession().setAttribute("Admin", request.getParameter("username"));
+                        request.getSession().setAttribute("name", administrators.get(0).getName());
+                        request.getSession().setAttribute("User", request.getParameter("username"));
+                        response.sendRedirect("dashboard.jsp");
+                    } else {
+                        response.sendRedirect("index.jsp?msg=Login Error.\n Please check your username & password.");
+                    }
+                }
 
             } else {
                 response.sendRedirect("index.jsp?msg=Please provide your username & password.");
