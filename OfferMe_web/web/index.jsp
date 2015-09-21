@@ -39,11 +39,19 @@
             function hide_login() {
                 $('#login').fadeOut();
             }
+            <%
+                if (request.getParameter("msg") != null) {
+            %>
+            function msg() {
+                alert("<%=request.getParameter("msg")%>");
+            }
+            <%            }
+            %>
         </script>
 
     </head>
 
-    <body>
+    <body onload="msg()">
 
         <!-- Navigation -->
         <a id="menu-toggle" href="#" class="btn btn-dark btn-lg toggle"><i class="fa fa-bars"></i></a>
@@ -54,7 +62,17 @@
                     <a href="#top"  onclick = $("#menu-close").click(); >OfferMe</a>
                 </li>
                 <li>
+                    <%
+                        if (request.getSession().getAttribute("User") == null) {
+                    %>
                     <a href="#top" onclick = "show_login()" >LogIn</a>
+                    <%
+                    } else {
+                    %>
+                    <a href="logout">Logout</a>
+                    <%
+                        }
+                    %>
                 </li>
                 <li>
                     <a href="#about" onclick = $("#menu-close").click(); >About</a>
@@ -75,17 +93,28 @@
                 <h3>The Best Place to get the Best Offers in Town!</h3>
                 <br>
                 <a href="#about" class="btn btn-dark btn-lg">Find Out How</a>
+                <%
+                    if (request.getSession().getAttribute("User") == null) {
+                %>
                 <a onclick = "show_login()" class="btn btn-dark btn-lg">LogIn</a>
                 <a href="#about" class="btn btn-dark btn-lg">Join Us</a>
+                <%
+                } else {
+                %>
+                <a href="dashboard.jsp" class="btn btn-dark btn-lg">Dashboard</a>
+                <a href="logout" class="btn btn-dark btn-lg">Logout</a>
+                <%
+                    }
+                %>
             </div>
         </header>
 
         <div class="form-login col-md-3" id="login" style="display: none">
             <h4>Welcome back.</h4>
             <form action="login" method="POST">
-                <input type="text" id="userName" class="form-control input-sm" placeholder="username" />
+                <input name="username" type="text" id="userName" class="form-control input-sm" placeholder="username" value="manager@kottufy.com"/>
                 <br />
-                <input type="text" id="userPassword" class="form-control input-sm" placeholder="password" />
+                <input name="password" type="password" id="userPassword" class="form-control input-sm" placeholder="password" value="123"/>
                 <br />
                 <div class="wrapper">
                     <span>     

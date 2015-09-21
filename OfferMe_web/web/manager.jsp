@@ -2,6 +2,11 @@
 <!DOCTYPE html>
 <html>
     <head>
+        <%
+            if (request.getSession().getAttribute("User") == null) {
+                response.sendRedirect("index.jsp");
+            }
+        %>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
         <!-- Bootstrap Core CSS -->
