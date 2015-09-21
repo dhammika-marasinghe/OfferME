@@ -82,7 +82,11 @@ public class MyOfferDialog extends DialogFragment implements View.OnClickListene
 
         protected void onPostExecute(Bitmap result) {
             //super.onPostExecute(result);
-            bmImage.setImageBitmap(result);
+            try {
+                bmImage.setImageBitmap(result);
+            }catch (Exception e) {
+                Toast.makeText(getActivity(), "No internet connection.", Toast.LENGTH_SHORT).show();
+            }
         }
     }
 
@@ -122,8 +126,12 @@ public class MyOfferDialog extends DialogFragment implements View.OnClickListene
 
         @Override
         protected void onPostExecute(String result) {
+        try{
             super.onPostExecute(result);
             t.setText(responseString);
+        }catch (Exception e) {
+            Toast.makeText(getActivity(), "No internet connection.", Toast.LENGTH_SHORT).show();
+        }
         }
     }
 }

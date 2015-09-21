@@ -63,6 +63,7 @@ public class SettingsActivity extends ActionBarActivity {
         Back.putExtra("radius", Integer.parseInt(string));
         Back.putExtra("subscribe", subscribe);
         startActivity(Back);
+        finish();
     }
 
     public void cancel(View view){
