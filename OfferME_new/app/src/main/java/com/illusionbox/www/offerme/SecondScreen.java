@@ -79,6 +79,8 @@ public class SecondScreen extends Activity {
 
         if(locationHandler.checkinAvailable()){
             checkin.setVisibility(View.VISIBLE);
+        } else {
+            Toast.makeText(SecondScreen.this, "You must be within 50 meters to check in", Toast.LENGTH_LONG).show();
         }
 
         new RequestTask().execute(offersLink);
