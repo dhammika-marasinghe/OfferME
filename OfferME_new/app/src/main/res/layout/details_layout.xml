@@ -35,7 +35,8 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="Loading..."
-        android:id="@+id/textViewDeetsNumber" />
+        android:id="@+id/textViewDeetsNumber"
+        android:phoneNumber="true" />
 
     <ScrollView
         android:layout_width="match_parent"

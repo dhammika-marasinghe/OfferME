@@ -7,10 +7,14 @@ import android.app.DialogFragment;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -31,7 +35,10 @@ import org.apache.http.impl.client.DefaultHttpClient;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
+import com.illusionbox.offerme.model.Offer;
+import com.illusionbox.offerme.model.Restaurant;
 
 /**
  * Created by Janitha on 8/23/2015.
@@ -46,6 +53,7 @@ public class SecondScreen extends Activity {
     String deetsUrl;
     LatLng myLatLng;
     LatLng resLatLng;
+    Restaurant restaurant;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,13 +66,14 @@ public class SecondScreen extends Activity {
 
         String title =  fromActivity.getExtras().getString("title");
         //String description =  fromActivity.getExtras().getString("description");
-        int imgResource = fromActivity.getExtras().getInt("image");
+        String image = fromActivity.getExtras().getString("image");
         String offersLink = fromActivity.getExtras().getString("offersLink");
         double resLat = fromActivity.getExtras().getDouble("resLat");
         double resLng = fromActivity.getExtras().getDouble("resLng");
         double myLat = fromActivity.getExtras().getDouble("latitude");
         double myLng = fromActivity.getExtras().getDouble("longitude");
         deetsUrl = fromActivity.getExtras().getString("deetsUrl");
+        restaurant = Restaurant.createRestaurant(fromActivity.getExtras().getString("restaurant"));
 
         myLatLng = new LatLng(myLat, myLng);
         resLatLng = new LatLng(resLat, resLng);
@@ -92,7 +101,11 @@ public class SecondScreen extends Activity {
         descView.setText(description);*/
 
         ImageView img = (ImageView) findViewById(R.id.imageViewDet);
-        img.setImageResource(imgResource);
+        img.setImageResource(R.drawable.finedining);
+
+        new DownloadImageTask(img)
+                .execute(image);
+
     }
 
     public void onBackClick(View view) {
@@ -114,7 +127,7 @@ public class SecondScreen extends Activity {
 
     public void onClickDeets(View view) {
         MyDeetsDialog d = new MyDeetsDialog();
-        d.setDeetsUrl(deetsUrl);
+        d.setRestaurant(restaurant);
         d.show(getFragmentManager(), "theDeets");
     }
 
@@ -172,29 +185,78 @@ public class SecondScreen extends Activity {
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
             progressDialog.dismiss();
-            try {
+            //try {
                 String[] csv = responseString.split("\n");
-                for (String s : csv) {
+                for (int i=1; i<csv.length; i++) {
+                    String s = csv[i];
                     String[] vals = s.split(",");
                     //Toast.makeText(SecondScreen.this, s, Toast.LENGTH_SHORT).show();
-                    if (vals.length == 4) {
-                        offers.add(new Offer(vals[0], vals[1], vals[2], Boolean.parseBoolean(vals[3]), R.drawable.iblauncher));
+                    if (vals.length == 9) {
+                        offers.add(Offer.createOffer(s));
                     }
                 }
                 theListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     @Override
-                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    public void onItemClick(final AdapterView<?> parent, View view, final int position, long id) {
                         if (!checkedIn) {
                             Toast.makeText(SecondScreen.this, "Please Check In", Toast.LENGTH_SHORT).show();
                         } else {
-                            DialogFragment d = new MyDialogFragment();
-                            d.show(getFragmentManager(), "theDialog");
+                            final AlertDialog.Builder dialog = new AlertDialog.Builder(SecondScreen.this);
+                            dialog.setMessage("Take Offer?");
+                            dialog.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface paramDialogInterface, int paramInt) {
+                                    Intent myIntent = new Intent(SecondScreen.this, TakeOffer.class);
+                                    Offer offer = (Offer) parent.getItemAtPosition(position);
+                                    myIntent.putExtra("OfferCode", offer.getOfferCode());
+                                    myIntent.putExtra("OfferQR", "http://dailygenius.com/wp-content/uploads/2014/06/qrcode.jpg");
+                                    startActivity(myIntent);
+                                    //get gps
+                                }
+                            });
+                            dialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+
+                                @Override
+                                public void onClick(DialogInterface paramDialogInterface, int paramInt) {
+                                }
+                            });
+                            dialog.show();
                         }
                     }
                 });
                 theOfferAdapter.notifyDataSetChanged();
-            } catch (Exception e){
+            /*} catch (Exception e){
+                e.printStackTrace();
                 Toast.makeText(SecondScreen.this, "No internet connection.", Toast.LENGTH_SHORT).show();
+            }*/
+        }
+    }
+
+    private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
+        ImageView bmImage;
+
+        public DownloadImageTask(ImageView bmImage) {
+            this.bmImage = bmImage;
+        }
+
+        protected Bitmap doInBackground(String... urls) {
+            String urldisplay = urls[0];
+            Bitmap mIcon11 = null;
+            try {
+                InputStream in = new java.net.URL(urldisplay).openStream();
+                mIcon11 = BitmapFactory.decodeStream(in);
+            } catch (Exception e) {
+                Log.e("Error", e.getMessage());
+                e.printStackTrace();
+            }
+            return mIcon11;
+        }
+
+        protected void onPostExecute(Bitmap result) {
+            //super.onPostExecute(result);
+            try {
+                bmImage.setImageBitmap(result);
+            }catch (Exception e) {
             }
         }
     }

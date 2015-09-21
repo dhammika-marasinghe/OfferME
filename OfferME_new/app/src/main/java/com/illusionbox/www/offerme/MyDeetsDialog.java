@@ -21,6 +21,8 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.illusionbox.offerme.model.Restaurant;
+
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.StatusLine;
@@ -41,16 +43,11 @@ import java.util.ArrayList;
  * Created by Janitha on 8/24/2015.
  */
 public class MyDeetsDialog extends DialogFragment implements View.OnClickListener {
-    private String deetsUrl="";
+    private Restaurant restaurant;
 
-    public String getDeetsUrl() {
-        return deetsUrl;
+    public void setRestaurant(Restaurant restaurant) {
+        this.restaurant = restaurant;
     }
-
-    public void setDeetsUrl(String deetsUrl) {
-        this.deetsUrl = deetsUrl;
-    }
-
 
     @Override
     public void onClick(View v) {
@@ -64,7 +61,23 @@ public class MyDeetsDialog extends DialogFragment implements View.OnClickListene
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         getDialog().setTitle("About Us");
         View view = inflater.inflate(R.layout.details_layout, null);
-        new RequestTask(view).execute(deetsUrl);
+
+        TextView title, tp, address, brief;
+
+        title = (TextView) view.findViewById(R.id.textViewDeetsTitle);
+        title.setText(restaurant.getName());
+        tp = (TextView) view.findViewById(R.id.textViewDeetsNumber);
+        tp.setText(restaurant.getTel());
+        address = (TextView) view.findViewById(R.id.textViewDeetsAddress);
+        address.setText(restaurant.getAddress());
+        brief = (TextView) view.findViewById(R.id.textViewDeetsBrief);
+        brief.setText(restaurant.getDescription());
+
+        RatingBar ratingBar = (RatingBar) view.findViewById(R.id.ratingBar);
+
+        ratingBar.setRating(restaurant.getRating());
+
+        new DownloadImageTask((ImageView) view.findViewById(R.id.imageViewDeetsLogo)).execute(restaurant.getLogoUrl());
         return view;
     }
 
@@ -91,72 +104,6 @@ public class MyDeetsDialog extends DialogFragment implements View.OnClickListene
         protected void onPostExecute(Bitmap result) {
             //super.onPostExecute(result);
             bmImage.setImageBitmap(result);
-        }
-    }
-
-    class RequestTask extends AsyncTask<String, String, String> {
-
-        private String responseString = null;
-        private TextView title, tp, address, brief;
-        private RatingBar ratingBar;
-        private View view;
-
-        public RequestTask(View v){
-            view = v;
-            title = (TextView) v.findViewById(R.id.textViewDeetsTitle);
-            tp = (TextView) v.findViewById(R.id.textViewDeetsNumber);
-            address = (TextView) v.findViewById(R.id.textViewDeetsAddress);
-            brief = (TextView) v.findViewById(R.id.textViewDeetsBrief);
-            ratingBar = (RatingBar) v.findViewById(R.id.ratingBar);
-        }
-
-        @Override
-        protected String doInBackground(String... uri) {
-            HttpClient httpclient = new DefaultHttpClient();
-            HttpResponse response;
-            try {
-                response = httpclient.execute(new HttpGet(uri[0]));
-                StatusLine statusLine = response.getStatusLine();
-                if(statusLine.getStatusCode() == HttpStatus.SC_OK){
-                    ByteArrayOutputStream out = new ByteArrayOutputStream();
-                    response.getEntity().writeTo(out);
-                    responseString = out.toString();
-                    out.close();
-                } else{
-                    //Closes the connection.
-                    response.getEntity().getContent().close();
-                    throw new IOException(statusLine.getReasonPhrase());
-                }
-            } catch (ClientProtocolException e) {
-                //TODO Handle problems..
-            } catch (IOException e) {
-                //TODO Handle problems..
-            }
-            return responseString;
-        }
-
-        @Override
-        protected void onPostExecute(String result) {
-            super.onPostExecute(result);
-            try{
-                ParseString(responseString);
-            }catch (Exception e) {
-                Toast.makeText(getActivity(), "No internet connection.", Toast.LENGTH_SHORT).show();
-                getDialog().dismiss();
-            }
-        }
-
-        private void ParseString(String s){
-            String [] values = s.split("\n");
-            if(values.length == 6){
-                title.setText(values[0]);
-                address.setText(values[1]);
-                tp.setText(values[2]);
-                new DownloadImageTask((ImageView) view.findViewById(R.id.imageViewDeetsLogo))
-                        .execute(values[4]);
-                brief.setText(values[5]);
-                ratingBar.setRating(3.5f);
-            }
         }
     }
 }

@@ -31,9 +31,9 @@
         android:layout_height="wrap_content"
         android:text="Settings"
         android:id="@+id/button_settings"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:onClick="settingsClick" />
+        android:onClick="settingsClick"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
 
 </RelativeLayout>

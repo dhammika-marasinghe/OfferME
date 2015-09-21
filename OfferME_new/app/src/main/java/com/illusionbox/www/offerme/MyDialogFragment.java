@@ -12,12 +12,15 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.illusionbox.offerme.model.Offer;
+
 /**
  * Created by Janitha on 8/24/2015.
  */
 public class MyDialogFragment extends DialogFragment implements View.OnClickListener {
 
     Button yes,no;
+    public Offer offer;
 
     @Nullable
     @Override

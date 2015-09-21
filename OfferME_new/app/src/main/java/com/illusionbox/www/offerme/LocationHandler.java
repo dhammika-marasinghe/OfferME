@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.location.Location;
 
 import com.google.android.gms.maps.model.LatLng;
+import com.illusionbox.offerme.model.Restaurant;
 
 /**
  * Created by Janitha on 8/25/2015.
@@ -62,7 +63,7 @@ public class LocationHandler {
 
     public boolean checkinAvailable(Restaurant restaurant){
         float [] results = new float[1];
-        Location.distanceBetween(UserLocation.latitude, UserLocation.longitude, restaurant.getPosititon().latitude, restaurant.getPosititon().longitude, results);
+        Location.distanceBetween(UserLocation.latitude, UserLocation.longitude, restaurant.getLocation().latitude, restaurant.getLocation().longitude, results);
         if(results[0] <= minDist){
             return true;
         }

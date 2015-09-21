@@ -20,6 +20,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.illusionbox.offerme.model.Offer;
+
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.StatusLine;
@@ -39,6 +41,7 @@ import java.util.ArrayList;
 public class MyOfferDialog extends DialogFragment implements View.OnClickListener {
 
     Button done;
+    Offer offer;
 
     @Override
     public void onClick(View v) {
@@ -56,7 +59,8 @@ public class MyOfferDialog extends DialogFragment implements View.OnClickListene
         done.setOnClickListener(this);
         new DownloadImageTask((ImageView) view.findViewById(R.id.imageViewQR))
                 .execute("http://dailygenius.com/wp-content/uploads/2014/06/qrcode.jpg");
-        new RequestTask(view).execute("https://raw.githubusercontent.com/janithajc/share/master/OfferCode.code");
+        //TextView t = (TextView) view.findViewById(R.id.textViewOC);
+        //new RequestTask(view).execute("https://raw.githubusercontent.com/janithajc/share/master/OfferCode.code");
         return view;
     }
 

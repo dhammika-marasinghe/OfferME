@@ -8,7 +8,9 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.location.Location;
 import android.location.LocationManager;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.provider.Settings;
 import android.support.v4.app.FragmentActivity;
 import android.view.View;
@@ -26,8 +28,22 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import com.illusionbox.offerme.model.Restaurant;
+
+import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
+import org.apache.http.StatusLine;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.params.BasicHttpParams;
+import org.apache.http.params.HttpConnectionParams;
+import org.apache.http.params.HttpParams;
 
 public class MapsActivity extends FragmentActivity {
 
@@ -40,10 +56,16 @@ public class MapsActivity extends FragmentActivity {
     RestaurantAdapter theAdapter;
     ListView theListView;
     int radius = 2000;
+    int initRadius = 2000;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        if (android.os.Build.VERSION.SDK_INT > 9) {
+            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+            StrictMode.setThreadPolicy(policy);
+        }
 
         progressDialog = new ProgressDialog(this);
         progressDialog.setMessage("Locating your device...");
@@ -164,6 +186,8 @@ public class MapsActivity extends FragmentActivity {
      * This should only be called once and when we are sure that {@link #mMap} is not null.
      */
 
+    Location lastKnown = new Location("");
+
     private void setUpMap() {
         mMap.setMyLocationEnabled(true);
         mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
@@ -181,109 +205,17 @@ public class MapsActivity extends FragmentActivity {
 
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(dummyLocation.getLatitude(), dummyLocation.getLongitude()), 10));
 
-
-        final HashMap<String,Restaurant> restaurants = new HashMap<>();
-        restaurants.put("KaMuKo", new Restaurant("KaMuKo", "The best Korean cuisine in town!", dummyLocation.getLatitude(), dummyLocation.getLongitude(), Restaurant.FINE_DINING, "https://raw.githubusercontent.com/janithajc/share/master/KaMuKo.offer", "https://raw.githubusercontent.com/janithajc/share/master/KaMuKo.details"));
-        restaurants.put("McDonalds", new Restaurant("McDonalds", "Enjoy Mc Burgers!", dummyLocation.getLatitude() + 0.01, dummyLocation.getLongitude() + 0.01, Restaurant.PUB, "https://raw.githubusercontent.com/janithajc/share/master/mcDonalds.offer", "https://raw.githubusercontent.com/janithajc/share/master/mcDonalds.details"));
-        restaurants.put("KFC", new Restaurant("KFC", "Best Fried Chicken!", dummyLocation.getLatitude() + 0.015, dummyLocation.getLongitude() - 0.015, Restaurant.PUB, "https://raw.githubusercontent.com/janithajc/share/master/mcDonalds.offer", "https://raw.githubusercontent.com/janithajc/share/master/pizzaHut.details"));
-        restaurants.put("Dinemore", new Restaurant("Dinemore", "Submarines will make you weep!", dummyLocation.getLatitude() + 0.02, dummyLocation.getLongitude() + 0.02, Restaurant.FINE_DINING,"https://raw.githubusercontent.com/janithajc/share/master/mcDonalds.offer", "https://raw.githubusercontent.com/janithajc/share/master/pizzaHut.details"));
-        restaurants.put("Bay Leaf", new Restaurant("Bay Leaf", "Great food huge prices!", dummyLocation.getLatitude(), dummyLocation.getLongitude() + 0.03, Restaurant.FINE_DINING,"https://raw.githubusercontent.com/janithajc/share/master/KaMuKo.offer","https://raw.githubusercontent.com/janithajc/share/master/pizzaHut.details"));
-        restaurants.put("Oro", new Restaurant("Oro", "Thin Pizza with big pricetags!", dummyLocation.getLatitude() + 0.02, dummyLocation.getLongitude() - 0.01, Restaurant.FINE_DINING,"https://raw.githubusercontent.com/janithajc/share/master/pizzaHut.offer","https://raw.githubusercontent.com/janithajc/share/master/pizzaHut.details"));
-        restaurants.put("Pizza Hut", new Restaurant("Pizza Hut", "Great pizza with great crust!", dummyLocation.getLatitude() - 0.01, dummyLocation.getLongitude() - 0.01, Restaurant.PIZZA,"https://raw.githubusercontent.com/janithajc/share/master/pizzaHut.offer", "https://raw.githubusercontent.com/janithajc/share/master/pizzaHut.details"));
-        restaurants.put("Domino's", new Restaurant("Domino's", "Great pizza with a lot of cheese!", dummyLocation.getLatitude() + 0.03, dummyLocation.getLongitude() + 0.15, Restaurant.PIZZA,"https://raw.githubusercontent.com/janithajc/share/master/pizzaHut.offer", "https://raw.githubusercontent.com/janithajc/share/master/pizzaHut.details"));
-        /*restaurants.put("KaMuKo1", new Restaurant("KaMuKo1", "The best Korean cuisine in town!", dummyLocation1.getLatitude(), dummyLocation1.getLongitude(), Restaurant.FINE_DINING, "https://raw.githubusercontent.com/janithajc/share/master/KaMuKo.offer", "https://raw.githubusercontent.com/janithajc/share/master/mcDonalds.details"));
-        restaurants.put("McDonalds1", new Restaurant("McDonalds1", "Enjoy Mc Burgers!", dummyLocation1.getLatitude() + 0.01, dummyLocation1.getLongitude() + 0.01, Restaurant.PUB, "https://raw.githubusercontent.com/janithajc/share/master/mcDonalds.offer", "https://raw.githubusercontent.com/janithajc/share/master/pizzaHut.details"));
-        restaurants.put("KFC1", new Restaurant("KFC1", "Best Fried Chicken!", dummyLocation1.getLatitude() + 0.015, dummyLocation1.getLongitude() - 0.015, Restaurant.PUB, "https://raw.githubusercontent.com/janithajc/share/master/mcDonalds.offer", "https://raw.githubusercontent.com/janithajc/share/master/pizzaHut.details"));
-        restaurants.put("Dinemore1", new Restaurant("Dinemore1", "Submarines will make you weep!", dummyLocation1.getLatitude() + 0.02, dummyLocation1.getLongitude() + 0.02, Restaurant.FINE_DINING,"https://raw.githubusercontent.com/janithajc/share/master/mcDonalds.offer", "https://raw.githubusercontent.com/janithajc/share/master/pizzaHut.details"));
-        restaurants.put("Bay Leaf1", new Restaurant("Bay Leaf1", "Great food huge prices!", dummyLocation1.getLatitude(), dummyLocation1.getLongitude() + 0.03, Restaurant.FINE_DINING,"","https://raw.githubusercontent.com/janithajc/share/master/pizzaHut.details"));
-        restaurants.put("Oro1", new Restaurant("Oro1", "Thin Pizza with big pricetags!", dummyLocation1.getLatitude() + 0.02, dummyLocation1.getLongitude() - 0.01, Restaurant.FINE_DINING,"","https://raw.githubusercontent.com/janithajc/share/master/pizzaHut.details"));
-        restaurants.put("Pizza Hut1", new Restaurant("Pizza Hut1", "Great pizza with great crust!", dummyLocation1.getLatitude() - 0.01, dummyLocation1.getLongitude() - 0.01, Restaurant.PIZZA,"https://raw.githubusercontent.com/janithajc/share/master/pizzaHut.offer", "https://raw.githubusercontent.com/janithajc/share/master/pizzaHut.details"));
-        restaurants.put("Domino's1", new Restaurant("Domino's1", "Great pizza with a lot of cheese!", dummyLocation1.getLatitude() + 0.03, dummyLocation1.getLongitude() + 0.15, Restaurant.PIZZA,"",""));*/
-
-        final MarkerOptions [] resMarker = new MarkerOptions[restaurants.size()];/*{new MarkerOptions().position(new LatLng(dummyLocation.getLatitude(), dummyLocation.getLongitude())).title("KaMuKo"),
-                new MarkerOptions().position(new LatLng(dummyLocation.getLatitude()+0.01, dummyLocation.getLongitude()+0.01)).title("McDonalds"),
-                new MarkerOptions().position(new LatLng(dummyLocation.getLatitude()+0.015, dummyLocation.getLongitude()-0.015)).title("KFC"),
-                new MarkerOptions().position(new LatLng(dummyLocation.getLatitude()+0.02, dummyLocation.getLongitude()+0.02)).title("Dinemore"),
-                new MarkerOptions().position(new LatLng(dummyLocation.getLatitude()+0, dummyLocation.getLongitude()+0.03)).title("Bay Leaf"),
-                new MarkerOptions().position(new LatLng(dummyLocation.getLatitude()+0.02, dummyLocation.getLongitude()-0.01)).title("Oro"),
-                new MarkerOptions().position(new LatLng(dummyLocation.getLatitude()-0.01, dummyLocation.getLongitude()-0.01)).title("Pizza Hut"),
-                new MarkerOptions().position(new LatLng(dummyLocation.getLatitude()+0.03, dummyLocation.getLongitude()-0.03)).title("Domino's")};*/
-
-        int i=0;
-        for(Restaurant r:restaurants.values()){
-           /* r.addOffer(new Offer("50% off!", "Get 50% off on all pizzas today!", "localhost", true, R.drawable.iblauncher));
-            r.addOffer(new Offer("30% off!", "Get 30% off on mac and cheese today!", "localhost", true, R.drawable.iblauncher));
-            r.addOffer(new Offer("20% off!", "Get 20% off on Biritza's today!", "localhost", true, R.drawable.iblauncher));
-            r.addOffer(new Offer("40% off!", "Get 40% off on coffee today!", "localhost", true, R.drawable.iblauncher));
-            r.addOffer(new Offer("10% off!", "Get 10% off on Tandoori Chicken Pizza today!", "localhost", true, R.drawable.iblauncher));*/
-            resMarker[i] = new MarkerOptions().position(r.getPosititon()).title(r.getName());
-            i++;
-        }
-
         mMap.setOnMyLocationChangeListener(new GoogleMap.OnMyLocationChangeListener() {
             @Override
             public void onMyLocationChange(final Location location) {
-                progressDialog.dismiss();
-                mMap.clear();
-                nearby.clear();
-                nearbyRestaurants.clear();
-                nearbyMarks.clear();
-
-                for(MarkerOptions a:resMarker){
-                    float []  results = new float[1];
-                    Location.distanceBetween(a.getPosition().latitude,a.getPosition().longitude,location.getLatitude(),location.getLongitude(),results);
-                    String distance = "Distance: " + ((int)results[0]/1000 > 0 ? (int)results[0]/1000+" km ":"") + (int)results[0]%1000 + " m";
-                    /*double latDist = Math.abs(a.getPosition().latitude - location.getLatitude());
-                    double longDist = Math.abs(a.getPosition().longitude - location.getLongitude());
-                    double dist = Math.sqrt(latDist*latDist + longDist*longDist);*/
-                    if(results[0] < radius)
-                    {
-                        a.snippet(distance);
-                        //nearby.add(a.getTitle());
-                        nearbyRestaurants.add(restaurants.get(a.getTitle()));
-                        nearbyMarks.put(a.getTitle(), a);
-                        mMap.addMarker(a);
-                    }
-                    else
-                    {
-                        a.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE));
-                        a.snippet(distance);
-                        mMap.addMarker(a);
-                    }
+                float []  dists = new float[1];
+                Location.distanceBetween(lastKnown.getLatitude(),lastKnown.getLongitude(),location.getLatitude(),location.getLongitude(),dists);
+                if(dists[0] > 10 || radius != initRadius) {
+                    lastKnown = location;
+                    initRadius = radius;
+                    new RequestTask(location).execute("http://192.168.1.2:8084/OfferMe_web/fetch_restaurant?latitude=" + location.getLatitude() + "&longitude=" + location.getLongitude() + "&radius=" + radius);
+                    //Toast.makeText(getBaseContext(), "http://192.168.1.11:8084/OfferMe_web/fetch_restaurant?latitude=" + location.getLatitude() + "&longitude=" + location.getLongitude() + "&radius=" + radius, Toast.LENGTH_LONG).show();
                 }
-
-                theAdapter.notifyDataSetChanged();
-                theListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                        Restaurant res = (Restaurant)parent.getItemAtPosition(position);
-                        String resTitle = res.getName();
-                        String restaurantSelected = "Locating " + resTitle;
-                        Toast.makeText(MapsActivity.this, restaurantSelected, Toast.LENGTH_SHORT).show();
-                        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(res.getPosititon(), 15));
-                    }
-                });
-                theListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-                    @Override
-                    public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                        Restaurant res = (Restaurant)parent.getItemAtPosition(position);
-                       /* MyDialogFragment d = new MyDialogFragment();
-                        d.setValues(res.getName(), res.getDescription());
-                        d.show(getFragmentManager(), "theDialog");*/
-                        Intent secondScreenIntent = new Intent(MapsActivity.this, SecondScreen.class);
-                        final int result = 1;
-                        secondScreenIntent.putExtra("title", res.getName());
-                        secondScreenIntent.putExtra("image",res.get_imgResource());
-                        secondScreenIntent.putExtra("offersLink", res.getOffers());
-                        secondScreenIntent.putExtra("resLat", res.getPosititon().latitude);
-                        secondScreenIntent.putExtra("resLng", res.getPosititon().longitude);
-                        secondScreenIntent.putExtra("latitude", location.getLatitude());
-                        secondScreenIntent.putExtra("longitude", location.getLongitude());
-                        secondScreenIntent.putExtra("deetsUrl", res.getDetails());
-                        startActivity(secondScreenIntent);
-                        return true;
-                    }
-                });
             }
         });
     }
@@ -291,5 +223,132 @@ public class MapsActivity extends FragmentActivity {
         Intent settingsIntent = new Intent(MapsActivity.this, SettingsActivity.class);
         settingsIntent.putExtra("radius", radius);
         startActivity(settingsIntent);
+    }
+    class RequestTask extends AsyncTask<String, String, String> {
+
+        ArrayList<Restaurant> restaurants = new ArrayList<Restaurant>();
+        private String responseString = null;
+        Location location = new Location("");
+
+        public RequestTask(Location location){
+            this.location = location;
+        }
+
+        @Override
+        protected String doInBackground(String... uri) {
+            HttpClient httpclient = new DefaultHttpClient();
+            HttpResponse response;
+            try {
+                response = httpclient.execute(new HttpGet(uri[0]));
+                StatusLine statusLine = response.getStatusLine();
+                if(statusLine.getStatusCode() == HttpStatus.SC_OK){
+                    ByteArrayOutputStream out = new ByteArrayOutputStream();
+                    response.getEntity().writeTo(out);
+                    responseString = out.toString();
+                    out.close();
+                } else{
+                    //Closes the connection.
+                    response.getEntity().getContent().close();
+                    throw new IOException(statusLine.getReasonPhrase());
+                }
+            } catch (ClientProtocolException e) {
+                finish();
+                e.printStackTrace();
+                //TODO Handle problems..
+            } catch (IOException e) {
+                finish();
+                e.printStackTrace();
+                //TODO Handle problems..
+            }
+            return responseString;
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            //super.onPostExecute(result);
+            //try{
+                ParseString(responseString);
+            /*}catch (Exception e) {
+                Toast.makeText(getBaseContext(),"Exception thrown!",Toast.LENGTH_LONG).show();
+            }*/
+        }
+
+        void ParseString(String listOfRes){
+            String [] resList = listOfRes.split("~END~");
+            for(int i=1; i < resList.length; i++){
+                String csvLine = resList[i];
+                if(csvLine.split(",").length == 14) {
+                    restaurants.add(Restaurant.createRestaurant(csvLine));
+                }
+            }
+            MarkerOptions[] resMarker = new MarkerOptions[restaurants.size()];
+
+            progressDialog.dismiss();
+            mMap.clear();
+            nearby.clear();
+            nearbyRestaurants.clear();
+            nearbyMarks.clear();
+
+            int i = 0;
+            for (Restaurant r : restaurants) {
+                resMarker[i] = new MarkerOptions().position(r.getLocation()).title(r.getName());
+                nearbyRestaurants.add(r);
+                i++;
+            }
+
+            for (MarkerOptions a : resMarker) {
+                float[] results = new float[1];
+                Location.distanceBetween(a.getPosition().latitude, a.getPosition().longitude, location.getLatitude(), location.getLongitude(), results);
+                String distance = "Distance: " + ((int) results[0] / 1000 > 0 ? (int) results[0] / 1000 + " km " : "") + (int) results[0] % 1000 + " m";
+                    /*if(results[0] < radius)
+                    {
+                        a.snippet(distance);
+                        //nearby.add(a.getTitle());
+                        nearbyRestaurants.add(restaurants.(a.getTitle()));
+                        nearbyMarks.put(a.getTitle(), a);
+                        mMap.addMarker(a);
+                    }
+                    else
+                    {*/
+                a.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE));
+                a.snippet(distance);
+                mMap.addMarker(a);
+                //}
+            }
+
+            theAdapter.notifyDataSetChanged();
+            theListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    Restaurant res = (Restaurant) parent.getItemAtPosition(position);
+                    String resTitle = res.getName();
+                    String restaurantSelected = "Locating " + resTitle;
+                    Toast.makeText(MapsActivity.this, restaurantSelected, Toast.LENGTH_SHORT).show();
+                    mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(res.getLocation(), 15));
+                }
+            });
+            theListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+                @Override
+                public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                    Restaurant res = (Restaurant) parent.getItemAtPosition(position);
+                       /* MyDialogFragment d = new MyDialogFragment();
+                        d.setValues(res.getName(), res.getDescription());
+                        d.show(getFragmentManager(), "theDialog");*/
+                    Intent secondScreenIntent = new Intent(MapsActivity.this, SecondScreen.class);
+                    final int result = 1;
+                    secondScreenIntent.putExtra("title", res.getName());
+                    secondScreenIntent.putExtra("image", res.getBannerUrl());
+                    secondScreenIntent.putExtra("offersLink", "http://192.168.1.2:8084/OfferMe_web/fetch_offer?id="+res.getIdrestaurant());
+                    secondScreenIntent.putExtra("resLat", res.getLocation().latitude);
+                    secondScreenIntent.putExtra("resLng", res.getLocation().longitude);
+                    secondScreenIntent.putExtra("latitude", location.getLatitude());
+                    secondScreenIntent.putExtra("longitude", location.getLongitude());
+                    secondScreenIntent.putExtra("deetsUrl", res.getDescription());
+                    secondScreenIntent.putExtra("restaurant", res.toCSVLine().replace("~END~",""));
+                    startActivity(secondScreenIntent);
+                    return true;
+                }
+            });
+        }
     }
 }
