@@ -1,5 +1,5 @@
 package com.illusionbox.offerme.model;
-// Generated 21-Sep-2015 02:18:11 by Hibernate Tools 3.6.0
+// Generated 21-Sep-2015 19:17:54 by Hibernate Tools 3.6.0
 
 
 import java.util.HashSet;
@@ -13,7 +13,9 @@ public class Restaurant  implements java.io.Serializable {
 
      private Integer idrestaurant;
      private RestaurantManager restaurantManager;
-     private String location;
+     private String name;
+     private double latitude;
+     private double longitude;
      private String address;
      private String tel;
      private String web;
@@ -23,18 +25,24 @@ public class Restaurant  implements java.io.Serializable {
      private String description;
      private Float rating;
      private String state;
+     private String type;
      private Set<Offer> offers = new HashSet<Offer>(0);
 
     public Restaurant() {
     }
 
 	
-    public Restaurant(RestaurantManager restaurantManager) {
+    public Restaurant(RestaurantManager restaurantManager, String name, double latitude, double longitude) {
         this.restaurantManager = restaurantManager;
+        this.name = name;
+        this.latitude = latitude;
+        this.longitude = longitude;
     }
-    public Restaurant(RestaurantManager restaurantManager, String location, String address, String tel, String web, String logoUrl, String bannerUrl, String openingHrs, String description, Float rating, String state, Set<Offer> offers) {
+    public Restaurant(RestaurantManager restaurantManager, String name, double latitude, double longitude, String address, String tel, String web, String logoUrl, String bannerUrl, String openingHrs, String description, Float rating, String state, String type, Set<Offer> offers) {
        this.restaurantManager = restaurantManager;
-       this.location = location;
+       this.name = name;
+       this.latitude = latitude;
+       this.longitude = longitude;
        this.address = address;
        this.tel = tel;
        this.web = web;
@@ -44,6 +52,7 @@ public class Restaurant  implements java.io.Serializable {
        this.description = description;
        this.rating = rating;
        this.state = state;
+       this.type = type;
        this.offers = offers;
     }
    
@@ -61,12 +70,26 @@ public class Restaurant  implements java.io.Serializable {
     public void setRestaurantManager(RestaurantManager restaurantManager) {
         this.restaurantManager = restaurantManager;
     }
-    public String getLocation() {
-        return this.location;
+    public String getName() {
+        return this.name;
     }
     
-    public void setLocation(String location) {
-        this.location = location;
+    public void setName(String name) {
+        this.name = name;
+    }
+    public double getLatitude() {
+        return this.latitude;
+    }
+    
+    public void setLatitude(double latitude) {
+        this.latitude = latitude;
+    }
+    public double getLongitude() {
+        return this.longitude;
+    }
+    
+    public void setLongitude(double longitude) {
+        this.longitude = longitude;
     }
     public String getAddress() {
         return this.address;
@@ -130,6 +153,13 @@ public class Restaurant  implements java.io.Serializable {
     
     public void setState(String state) {
         this.state = state;
+    }
+    public String getType() {
+        return this.type;
+    }
+    
+    public void setType(String type) {
+        this.type = type;
     }
     public Set<Offer> getOffers() {
         return this.offers;

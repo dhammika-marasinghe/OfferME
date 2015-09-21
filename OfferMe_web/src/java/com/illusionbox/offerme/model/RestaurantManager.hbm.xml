@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
-<!-- Generated 21-Sep-2015 02:18:12 by Hibernate Tools 3.6.0 -->
+<!-- Generated 21-Sep-2015 19:17:54 by Hibernate Tools 3.6.0 -->
 <hibernate-mapping>
     <class name="com.illusionbox.offerme.model.RestaurantManager" table="restaurant_manager" catalog="offerme">
         <id name="email" type="string">
@@ -9,7 +9,7 @@
             <generator class="assigned" />
         </id>
         <many-to-one name="administrator" class="com.illusionbox.offerme.model.Administrator" fetch="select">
-            <column name="administrator_email" length="60" not-null="true" />
+            <column name="administrator_email" length="60" />
         </many-to-one>
         <property name="password" type="string">
             <column name="password" length="45" not-null="true" />
@@ -18,7 +18,7 @@
             <column name="name" length="65" not-null="true" />
         </property>
         <property name="address" type="string">
-            <column name="address" length="100" />
+            <column name="address" length="300" />
         </property>
         <property name="tel" type="string">
             <column name="tel" length="15" />

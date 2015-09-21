@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
-<!-- Generated 21-Sep-2015 02:18:12 by Hibernate Tools 3.6.0 -->
+<!-- Generated 21-Sep-2015 19:17:54 by Hibernate Tools 3.6.0 -->
 <hibernate-mapping>
     <class name="com.illusionbox.offerme.model.Offer" table="offer" catalog="offerme">
         <id name="idoffer" type="java.lang.Integer">
@@ -12,7 +12,7 @@
             <column name="restaurant_idrestaurant" not-null="true" />
         </many-to-one>
         <property name="title" type="string">
-            <column name="title" length="45" />
+            <column name="title" length="100" />
         </property>
         <property name="description" type="string">
             <column name="description" length="65535" />
@@ -30,7 +30,7 @@
             <column name="valid" />
         </property>
         <property name="imageUrl" type="string">
-            <column name="image_url" length="100" />
+            <column name="image_url" length="300" />
         </property>
         <property name="type" type="string">
             <column name="type" length="45" />
@@ -38,13 +38,5 @@
         <property name="offerCode" type="string">
             <column name="offer_code" length="15" />
         </property>
-        <set name="customers" table="customer_has_offer" inverse="false" lazy="true" fetch="select">
-            <key>
-                <column name="offer_idoffer" not-null="true" />
-            </key>
-            <many-to-many entity-name="com.illusionbox.offerme.model.Customer">
-                <column name="customer_email" length="60" not-null="true" />
-            </many-to-many>
-        </set>
     </class>
 </hibernate-mapping>

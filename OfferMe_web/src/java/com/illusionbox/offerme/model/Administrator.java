@@ -1,5 +1,5 @@
 package com.illusionbox.offerme.model;
-// Generated 21-Sep-2015 02:18:11 by Hibernate Tools 3.6.0
+// Generated 21-Sep-2015 19:17:54 by Hibernate Tools 3.6.0
 
 
 import java.util.HashSet;

@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
-<!-- Generated 21-Sep-2015 02:18:12 by Hibernate Tools 3.6.0 -->
+<!-- Generated 21-Sep-2015 19:17:54 by Hibernate Tools 3.6.0 -->
 <hibernate-mapping>
     <class name="com.illusionbox.offerme.model.Administrator" table="administrator" catalog="offerme">
         <id name="email" type="string">
@@ -16,7 +16,7 @@
         </property>
         <set name="restaurantManagers" table="restaurant_manager" inverse="true" lazy="true" fetch="select">
             <key>
-                <column name="administrator_email" length="60" not-null="true" />
+                <column name="administrator_email" length="60" />
             </key>
             <one-to-many class="com.illusionbox.offerme.model.RestaurantManager" />
         </set>
