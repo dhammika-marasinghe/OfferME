@@ -222,7 +222,7 @@
         </aside-->
 
         <!-- Portfolio -->
-        <section id="portfolio" class="portfolio">
+        <!--section id="portfolio" class="portfolio">
             <div class="container">
                 <div class="row">
                     <div class="col-lg-10 col-lg-offset-1 text-center">
@@ -259,17 +259,17 @@
                             </div>
                         </div>
                         <!-- /.row (nested) -->
-                        <a href="#" class="btn btn-dark">View More Items</a>
+                        <!--a href="#" class="btn btn-dark">View More Items</a>
                     </div>
                     <!-- /.col-lg-10 -->
-                </div>
+                <!--/div>
                 <!-- /.row -->
-            </div>
+            <!--/div>
             <!-- /.container -->
-        </section>
+        <!--/section>
 
         <!-- Call to Action -->
-        <aside class="call-to-action bg-primary">
+        <!--aside class="call-to-action bg-primary">
             <div class="container">
                 <div class="row">
                     <div class="col-lg-12 text-center">
