@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-package hb;
+package com.illusionbox.offerme.manager;
 
 import org.hibernate.cfg.AnnotationConfiguration;
 import org.hibernate.SessionFactory;
