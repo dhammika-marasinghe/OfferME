@@ -51,7 +51,7 @@
         </nav>
 
         <div class="col-lg-8 col-lg-offset-2 form-normal">
-            <form class="form-horizontal" action="addrestaurant.jsp" method="POST">
+            <form class="form-horizontal" action="add_restaurant" method="POST">
                 <fieldset>
 
                     <!-- Form Name -->
@@ -133,10 +133,10 @@
                     <div class="form-group">
                         <label class="col-md-4 control-label" for="selectbasic">Type</label>
                         <div class="col-md-4">
-                            <select id="selectbasic" name="selectbasic" class="form-control">
-                                <option value="1">Fine Dining</option>
-                                <option value="2">Pub</option>
-                                <option value="2">Fast Food</option>
+                            <select id="selectbasic" name="type" class="form-control">
+                                <option value="Fine Dining">Fine Dining</option>
+                                <option value="Pub">Pub</option>
+                                <option value="Fast Food">Fast Food</option>
                             </select>
                         </div>
                     </div>
@@ -146,7 +146,7 @@
                         <div class="col-lg-4 col-lg-offset-4">
                             <span class="btn-group">
                                 <button id="submit" type="submit" name="submit" class="btn btn-lg btn-primary">Send</button>
-                                <a href="index.jsp" class="btn btn-lg btn-danger">Back</a>
+                                <a href="dashboard.jsp" class="btn btn-lg btn-danger">Back</a>
                             </span>
                         </div>
                     </div>
