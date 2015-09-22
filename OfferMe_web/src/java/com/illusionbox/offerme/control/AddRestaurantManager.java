@@ -48,6 +48,8 @@ public class AddRestaurantManager extends HttpServlet {
 
             hbSession.save(rm);
             hbTransaction.commit();
+            
+            response.sendRedirect("index.jsp?msg=Your join request is sent to administrator. You can view approval status on your dashboard.");
         } catch (Exception e) {
             throw new ServletException(e);
         }

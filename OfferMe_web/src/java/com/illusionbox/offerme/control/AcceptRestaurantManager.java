@@ -44,7 +44,7 @@ public class AcceptRestaurantManager extends HttpServlet {
                 hbSession.update(rm);
                 hbTransaction.commit();
             }
-            response.sendRedirect("dashboard.jsp");
+            response.sendRedirect("dashboard.jsp?msg=Restaurant Manager state changed.");
 
         } catch (Exception e) {
             throw new ServletException(e);

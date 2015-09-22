@@ -27,6 +27,7 @@
 
         <!-- Custom CSS -->
         <link href="css/business-frontpage.css" rel="stylesheet">
+        <link href="css/offer_me_styles.css" rel="stylesheet">
 
         <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
         <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -35,9 +36,32 @@
             <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
         <![endif]-->
 
+        <script>
+            <%
+                if (request.getParameter("msg") != null) {
+            %>
+            function msg() {
+                $('#popup').animate({
+                    top: "0"
+                }, 1000, function() {
+                    $('#popup').animate({
+                        top: "-60"
+                    }, 5000, function() {
+                        // Animation complete.
+                    });
+                });
+                //$('#popup').animate(top:-60px);
+            }
+            function hidemsg() {
+                $('#popup').fadeOut();
+            }
+            <%            }
+            %>
+        </script>
     </head>
 
-    <body>
+    <body onload="msg()">        
+        <button class="alert alert-success popup text-center" role="alert" id="popup" onclick="hidemsg()"><%=request.getParameter("msg")%></button>
 
         <!-- Navigation -->
         <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
@@ -196,7 +220,7 @@
                         <!--<a href="#" class="btn btn-danger">Deactivate Restaurant</a>
                         <a href="#" class="btn btn-success">Activate Restaurant</a>-->
                         <!--<a href="#" class="btn btn-warning">Edit Restaurant</a>-->
-                        <a href="offer.jsp?idres=<%=r.getIdrestaurant() %>" class="btn btn-info">Add Offer</a>
+                        <a href="offer.jsp?idres=<%=r.getIdrestaurant()%>" class="btn btn-info">Add Offer</a>
                     </span>
                 </div>
                 <br />
@@ -217,13 +241,13 @@
                                 <%
                                 } else {
                                 %>                                
-                                <a href="activate_offer?id=<%=o.getIdoffer()%>&active=YES" class="btn btn-sm btn-success">Activate Offer</a>
-                                <!--<a href="" class="btn btn-sm btn-danger disabled">Offer Not Active</a>-->
-                                <span class="glyphicon glyphicon-remove-circle"/></span>
-                                <%
-                                    }
-                                %>
-                                <!--<a href="edit_offer?id=<%=o.getIdoffer()%>" class="btn btn-sm btn-warning">Edit Offer</a>-->
+                            <a href="activate_offer?id=<%=o.getIdoffer()%>&active=YES" class="btn btn-sm btn-success">Activate Offer</a>
+                            <!--<a href="" class="btn btn-sm btn-danger disabled">Offer Not Active</a>-->
+                            <span class="glyphicon glyphicon-remove-circle"/></span>
+                            <%
+                                }
+                            %>
+                            <!--<a href="edit_offer?id=<%=o.getIdoffer()%>" class="btn btn-sm btn-warning">Edit Offer</a>-->
                             </span>
                         </h3>
                         <div class="col-sm-2">

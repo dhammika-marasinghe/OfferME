@@ -57,7 +57,7 @@ public class AddRestaurant extends HttpServlet {
                 hbSession.save(r);
                 hbTransaction.commit();
 
-                response.sendRedirect("dashboard.jsp?msg=Restaurant successfully added.");
+                response.sendRedirect("dashboard.jsp?msg=Restaurant addeed successfully!!!");
             } else {
                 response.sendRedirect("index.jsp");
             }

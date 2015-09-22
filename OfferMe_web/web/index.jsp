@@ -17,8 +17,6 @@
 
         <!-- Custom CSS -->
         <link href="css/stylish-portfolio.css" rel="stylesheet">
-
-        <!-- Custom CSS -->
         <link href="css/offer_me_styles.css" rel="stylesheet">
 
         <!-- Custom Fonts -->
@@ -45,10 +43,10 @@
             function msg() {
                 $('#popup').animate({
                     top: "0"
-                }, 2000, function() {
+                }, 1000, function() {
                     $('#popup').animate({
                         top: "-60"
-                    }, 2000, function() {
+                    }, 5000, function() {
                         // Animation complete.
                     });
                 });
@@ -64,8 +62,7 @@
     </head>
 
     <body onload="msg()">
-
-        <button class="btn btn-lg btn-default popup text-center" id="popup" onclick="hidemsg()">"Login Success"</button>
+        <button class="alert alert-success popup text-center" role="alert" id="popup" onclick="hidemsg()"><%=request.getParameter("msg")%></button>
 
         <!-- Navigation -->
         <a id="menu-toggle" href="#" class="btn btn-dark btn-lg toggle"><i class="fa fa-bars"></i></a>
@@ -296,7 +293,7 @@
         </aside>
 
         <!-- Map -->
-        <section id="contact" class="map">
+        <section id="map" class="map">
             <iframe src="https://www.google.com/maps/embed?pb=!1m23!1m12!1m3!1d9420.959033985982!2d79.9789386769026!3d6.887568085656224!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!4m8!3e6!4m5!1s0x3ae25139e858ce25%3A0xa3d0ed21ed9bc68c!2sPore!3m2!1d6.887844599999999!2d79.9836108!4m0!5e0!3m2!1sen!2slk!4v1442770356279" width="100%" height="100%" frameborder="0" style="border:0" allowfullscreen></iframe>
         </section>
 
@@ -304,8 +301,8 @@
         <footer>
             <div class="container">
                 <div class="row">
-                    <div class="col-lg-10 col-lg-offset-1 text-center">
-                        <h4><strong>IllusionBox Origins</strong>
+                    <div id="contact" class="col-lg-10 col-lg-offset-1 text-center">
+                        <h4><strong>IllusionBox</strong>
                         </h4>
                         <p>#38 Forbes and Walker building<br>Washington Place, Colombo 07, SriLanka</p>
                         <ul class="list-unstyled">

@@ -26,7 +26,7 @@ public class Logout extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try {
             request.getSession().invalidate();
-            response.sendRedirect("index.jsp");
+            response.sendRedirect("index.jsp?msg=Logout Successfull!!!");
         } catch (Exception e) {
             throw new ServletException(e);
         }
