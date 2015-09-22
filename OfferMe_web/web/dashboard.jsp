@@ -196,7 +196,7 @@
                         <!--<a href="#" class="btn btn-danger">Deactivate Restaurant</a>
                         <a href="#" class="btn btn-success">Activate Restaurant</a>-->
                         <!--<a href="#" class="btn btn-warning">Edit Restaurant</a>-->
-                        <a href="offer.jsp" class="btn btn-info">Add Offer</a>
+                        <a href="offer.jsp?idres=<%=r.getIdrestaurant() %>" class="btn btn-info">Add Offer</a>
                     </span>
                 </div>
                 <br />

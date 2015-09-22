@@ -52,17 +52,19 @@
         </nav>
 
         <div class="col-lg-8 col-lg-offset-2 form-normal">
-            <form class="form-horizontal" action="addrestaurant.jsp" method="POST">
+            <form class="form-horizontal" action="add_offer" method="GET">
                 <fieldset>
 
                     <!-- Form Name -->
                     <legend class="text-center">New Offer Information</legend>
+                    
+                    <input name="idres" type="hidden" value="<%=request.getParameter("idres")%>">
 
                     <!-- Text input-->
                     <div class="form-group">
                         <label class="col-md-4 control-label" for="name">Offer Title</label>  
                         <div class="col-md-4">
-                            <input id="name" name="name" type="text" placeholder="Offer Name" class="form-control input-md" required="">
+                            <input id="name" name="title" type="text" placeholder="Offer Name" class="form-control input-md" required="">
                         </div>
                     </div>
 
@@ -101,11 +103,20 @@
                     <div class="form-group">
                         <label class="col-md-4 control-label" for="selectbasic">Type</label>
                         <div class="col-md-4">
-                            <select id="selectbasic" name="selectbasic" class="form-control">
-                                <option value="1">Discount</option>
-                                <option value="2">Promotion</option>
-                                <option value="2">Limited</option>
+                            <select id="selectbasic" name="type" class="form-control">
+                                <option value="Discount">Discount</option>
+                                <option value="Promotion">Promotion</option>
+                                <option value="Limited">Limited</option>
                             </select>
+                        </div>
+                    </div>
+                    
+                    
+                    <!-- Text input-->
+                    <div class="form-group">
+                        <label class="col-md-4 control-label" for="name">Offer Code</label>  
+                        <div class="col-md-4">
+                            <input id="code" name="offercode" type="text" placeholder="Offer Code" class="form-control input-md" required="">
                         </div>
                     </div>
 
@@ -114,7 +125,7 @@
                         <div class="col-lg-4 col-lg-offset-4">
                             <span class="btn-group">
                                 <button id="submit" type="submit" name="submit" class="btn btn-lg btn-primary">Send</button>
-                                <a href="index.jsp" class="btn btn-lg btn-danger">Back</a>
+                                <a href="dashboard.jsp" class="btn btn-lg btn-danger">Back</a>
                             </span>
                         </div>
                     </div>
