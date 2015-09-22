@@ -43,7 +43,19 @@
                 if (request.getParameter("msg") != null) {
             %>
             function msg() {
-                alert("<%=request.getParameter("msg")%>");
+                $('#popup').animate({
+                    top: "0"
+                }, 2000, function() {
+                    $('#popup').animate({
+                        top: "-60"
+                    }, 2000, function() {
+                        // Animation complete.
+                    });
+                });
+                //$('#popup').animate(top:-60px);
+            }
+            function hidemsg() {
+                $('#popup').fadeOut();
             }
             <%            }
             %>
@@ -52,6 +64,8 @@
     </head>
 
     <body onload="msg()">
+
+        <button class="btn btn-lg btn-default popup text-center" id="popup" onclick="hidemsg()">"Login Success"</button>
 
         <!-- Navigation -->
         <a id="menu-toggle" href="#" class="btn btn-dark btn-lg toggle"><i class="fa fa-bars"></i></a>
@@ -258,14 +272,14 @@
                                 </div>
                             </div>
                         </div>
-                        <!-- /.row (nested) -->
-                        <!--a href="#" class="btn btn-dark">View More Items</a>
-                    </div>
-                    <!-- /.col-lg-10 -->
-                <!--/div>
-                <!-- /.row -->
-            <!--/div>
-            <!-- /.container -->
+        <!-- /.row (nested) -->
+        <!--a href="#" class="btn btn-dark">View More Items</a>
+    </div>
+        <!-- /.col-lg-10 -->
+        <!--/div>
+        <!-- /.row -->
+        <!--/div>
+        <!-- /.container -->
         <!--/section>
 
         <!-- Call to Action -->
