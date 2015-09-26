@@ -108,7 +108,7 @@
                     if (request.getSession().getAttribute("User") == null) {
                 %>
                 <a onclick = "show_login()" class="btn btn-dark btn-lg">LogIn</a>
-                <a href="#about" class="btn btn-dark btn-lg">Join Us</a>
+                <a href="manager.jsp" class="btn btn-dark btn-lg">Join Us</a>
                 <%
                 } else {
                 %>
