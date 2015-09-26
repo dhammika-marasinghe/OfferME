@@ -36,12 +36,13 @@ public class FetchOffer extends HttpServlet {
 
                 Session hbSession = OfferMeHibernateUtil.getSessionFactory().openSession();
                 String hql = "from Offer "
-                        + "where restaurant=" + request.getParameter("id") +" and valid=1";
+                        + "where restaurant=" + request.getParameter("id") + " and valid=1";
                 Query q = hbSession.createQuery(hql);
-                
+
                 List<Offer> offers = q.list();
                 out.println(Offer.csvHeader);
                 for (Offer offer : offers) {
+                    offer.setOfferCode(offer.getOfferCode() + "#" + request.getSession().getId());
                     out.println(offer.toCSVLine());
                 }
             }
